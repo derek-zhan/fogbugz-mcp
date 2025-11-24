@@ -278,11 +278,60 @@ export async function getCaseLink(api: FogBugzApi, args: any): Promise<string> {
   try {
     // Generate case link
     const caseLink = api.getCaseLink(caseId);
-    
+
     return JSON.stringify({
       caseId,
       caseLink,
       message: `Link to case #${caseId}: ${caseLink}`,
+    });
+  } catch (error: any) {
+    return JSON.stringify({
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * Views detailed information about a FogBugz case
+ */
+export async function viewCase(api: FogBugzApi, args: any): Promise<string> {
+  const { caseId, includeEvents } = args;
+
+  try {
+    // View the case
+    const caseData = await api.viewCase(caseId, includeEvents || false);
+
+    // Generate case link
+    const caseLink = api.getCaseLink(caseId);
+
+    // Format case information
+    const formattedCase: any = {
+      id: caseData.ixBug,
+      title: caseData.sTitle,
+      status: caseData.sStatus,
+      priority: caseData.sPriority,
+      project: caseData.sProject,
+      area: caseData.sArea,
+      milestone: caseData.sFixFor,
+      assignee: caseData.sPersonAssignedTo,
+      link: caseLink,
+    };
+
+    // Include events if requested
+    if (includeEvents && caseData.events) {
+      formattedCase.events = caseData.events.map(event => ({
+        id: event.ixBugEvent,
+        person: event.sPerson,
+        verb: event.sVerb,
+        text: event.sText || event.sHTML,
+        date: event.dt,
+      }));
+    }
+
+    // Generate a response
+    return JSON.stringify({
+      case: formattedCase,
+      message: `Retrieved case #${caseId}: "${caseData.sTitle}"`,
     });
   } catch (error: any) {
     return JSON.stringify({
@@ -344,4 +393,4 @@ export async function createProject(api: FogBugzApi, args: any): Promise<string>
       error: error.message,
     });
   }
-} 
+}

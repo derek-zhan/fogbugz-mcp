@@ -199,6 +199,27 @@ export const getCaseLinkTool: Tool = {
   },
 };
 
+// Tool: View a specific FogBugz case
+export const viewCaseTool: Tool = {
+  name: 'fogbugz_view_case',
+  description: 'Views detailed information about a specific FogBugz case.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      caseId: {
+        type: 'number',
+        description: 'The ID of the case to view',
+      },
+      includeEvents: {
+        type: 'boolean',
+        description: 'Whether to include the case event history (comments and changes)',
+        optional: true,
+      },
+    },
+    required: ['caseId'],
+  },
+};
+
 // Tool: Create a new FogBugz project
 export const createProjectTool: Tool = {
   name: 'fogbugz_create_project',
@@ -238,5 +259,6 @@ export const fogbugzTools = [
   listUserCasesTool,
   searchCasesTool,
   getCaseLinkTool,
+  viewCaseTool,
   createProjectTool,
-]; 
+];

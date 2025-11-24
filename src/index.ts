@@ -130,6 +130,9 @@ async function startMcpServer(api: FogBugzApi) {
           case 'fogbugz_get_case_link':
             content = await handlers.getCaseLink(api, args);
             break;
+          case 'fogbugz_view_case':
+            content = await handlers.viewCase(api, args);
+            break;
           case 'fogbugz_create_project':
             content = await handlers.createProject(api, args);
             break;
@@ -241,4 +244,4 @@ async function main() {
 main().catch(error => {
   log.error('Unhandled error:', error);
   process.exit(1);
-}); 
+});

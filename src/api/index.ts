@@ -222,6 +222,43 @@ export class FogBugzApi {
   }
 
   /**
+   * View a specific case by ID
+   */
+  async viewCase(caseId: number, includeEvents: boolean = false): Promise<FogBugzCase> {
+    const cols = [
+      'ixBug',
+      'sTitle',
+      'sStatus',
+      'ixStatus',
+      'sPriority',
+      'ixPriority',
+      'sProject',
+      'ixProject',
+      'sArea',
+      'ixArea',
+      'sFixFor',
+      'ixFixFor',
+      'sPersonAssignedTo',
+      'ixPersonAssignedTo',
+    ];
+
+    if (includeEvents) {
+      cols.push('events');
+    }
+
+    const response = await this.request<{ cases: FogBugzCase[] }>('search', {
+      q: caseId.toString(),
+      cols,
+    });
+
+    if (!response.cases || response.cases.length === 0) {
+      throw new Error(`Case #${caseId} not found`);
+    }
+
+    return response.cases[0];
+  }
+
+  /**
    * Get a direct link to a case
    */
   getCaseLink(caseId: number): string {
@@ -254,4 +291,4 @@ export class FogBugzApi {
   }
 }
 
-export * from './types'; 
+export * from './types';
