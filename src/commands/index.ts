@@ -323,7 +323,8 @@ export async function viewCase(api: FogBugzApi, args: any): Promise<string> {
         id: event.ixBugEvent,
         person: event.sPerson,
         verb: event.sVerb,
-        text: event.sText || event.sHTML,
+        text: event.sText || event.sHTML || event.s,
+        description: event.s,
         date: event.dt,
       }));
     }

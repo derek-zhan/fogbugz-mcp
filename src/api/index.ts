@@ -244,6 +244,7 @@ export class FogBugzApi {
 
     if (includeEvents) {
       cols.push('events');
+      cols.push('latestEvent');
     }
 
     const response = await this.request<{ cases: FogBugzCase[] }>('search', {

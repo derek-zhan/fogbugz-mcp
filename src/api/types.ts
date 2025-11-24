@@ -28,11 +28,20 @@ export interface FogBugzCase {
 
 export interface FogBugzEvent {
   ixBugEvent: number;
+  ixBug?: number;
+  evt?: number;
   sVerb: string;
-  sText?: string;
-  dt: string;
+  ixPerson?: number;
   sPerson: string;
-  ixPerson: number;
+  ixPersonAssignedTo?: number;
+  dt: string;
+  s?: string;
+  sHTML?: string;
+  sText?: string;
+  fEmail?: boolean;
+  fExternal?: boolean;
+  sFormat?: string;
+  sChanges?: string;
   [key: string]: any;
 }
 
@@ -118,4 +127,4 @@ export interface CreateProjectParams {
 export interface FileAttachment {
   path: string;
   fieldName?: string;
-} 
+}
